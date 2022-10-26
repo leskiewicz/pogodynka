@@ -25,7 +25,7 @@ class LocationController extends AbstractController
     public function new(Request $request, LocationRepository $locationRepository): Response
     {
         $location = new Location();
-        $form = $this->createForm(LocationType::class, $location);
+        $form = $this->createForm(LocationType::class, $location, ['validation_group' => ['new'],]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -51,7 +51,7 @@ class LocationController extends AbstractController
     #[Route('/{id}/edit', name: 'app_location_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Location $location, LocationRepository $locationRepository): Response
     {
-        $form = $this->createForm(LocationType::class, $location);
+        $form = $this->createForm(LocationType::class, $location,['validation_group' => ['edit'],]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -69,7 +69,7 @@ class LocationController extends AbstractController
     #[Route('/{id}', name: 'app_location_delete', methods: ['POST'])]
     public function delete(Request $request, Location $location, LocationRepository $locationRepository): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$location->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $location->getId(), $request->request->get('_token'))) {
             $locationRepository->remove($location, true);
         }
 

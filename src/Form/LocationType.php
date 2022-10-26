@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Location;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -13,10 +14,15 @@ class LocationType extends AbstractType
     {
         $builder
             ->add('city')
-            ->add('country')
+            ->add('country', ChoiceType::class, [
+                'choices' => [
+                    'Polska' => 'PL',
+                    'Niemcy' => 'DE',
+                    'Czechy' => 'CZ',
+                    'Rosja' => 'RU',
+                ],])
             ->add('latitude')
-            ->add('longitude')
-        ;
+            ->add('longitude');
     }
 
     public function configureOptions(OptionsResolver $resolver): void

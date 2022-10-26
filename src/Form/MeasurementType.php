@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Measurement;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -14,9 +15,14 @@ class MeasurementType extends AbstractType
         $builder
             ->add('date')
             ->add('temperature')
-            ->add('percipitation')
-            ->add('location')
-        ;
+            ->add('percipitation', ChoiceType::class, [
+                'choices' => [
+                    'none' => 'none',
+                    'rain' => 'rain',
+                    'snow' => 'snow',
+                    'sunny' => 'sunny',
+                ],])
+            ->add('location');
     }
 
     public function configureOptions(OptionsResolver $resolver): void
