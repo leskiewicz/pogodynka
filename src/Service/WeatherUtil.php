@@ -31,7 +31,11 @@ class WeatherUtil
     {
         if (gettype($location) == 'array') {
             return $this->measurementRepository->findByLocation($location[0]);
-        } else
+        }
+        if (gettype($location) == 'string') {
+            return $this->measurementRepository->findByLocationInt($location);
+        }
+        else
             return $this->measurementRepository->findByLocation($location);
     }
 }

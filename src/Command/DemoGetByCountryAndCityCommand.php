@@ -20,11 +20,11 @@ class DemoGetByCountryAndCityCommand extends Command
 {
     private WeatherUtil $util;
 
-    public function __construct(WeatherUtil $util, string $name = null)
+    public function __construct(WeatherUtil $util)
     {
         $this->util = $util;
 
-        parent::__construct($name);
+        parent::__construct();
     }
 
     protected function configure(): void
@@ -41,14 +41,15 @@ class DemoGetByCountryAndCityCommand extends Command
         $city = $input->getArgument('city');
 
         if ($country && $city) {
-            $output->writeln("{$city}, {$country}");
+//            $output->writeln("{$city}, {$country}");
             $results = $this->util->getWeatherForCountryAndCity($country, $city);
             foreach ($results as $result) {
                 $date = $result->getDate()->format('Y-m-d');
-                $output->writeln("{$date} {$result->getTemperature()}C");
+                $temperature = $result->getTemperature();
+//                $output->writeln("{$date} {$temperature}C");
+                $output->writeln("{$city}, {$country}, {$date} {$temperature}C");
             }
         }
-
 //        $io->success('You have a new command! Now make it your own! Pass --help to see your options.');
 
         return Command::SUCCESS;

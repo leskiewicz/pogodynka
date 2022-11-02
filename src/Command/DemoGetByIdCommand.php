@@ -10,6 +10,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use App\Entity\Location;
 
 #[AsCommand(
     name: 'demo:GetById',
@@ -29,20 +30,25 @@ class DemoGetByIdCommand extends Command
     protected function configure(): void
     {
         $this
-            ->addArgument('arg1', InputArgument::OPTIONAL, 'Id of location');
+            ->addArgument('id', InputArgument::REQUIRED, 'id');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
-        $arg1 = $input->getArgument('arg1');
+        $id = $input->getArgument('id');
 
-        if ($arg1) {
-            $output->writeln($this->util->getWeatherForLocation($arg1));
-//            $io->note(sprintf('You passed an argument: %s', $arg1));
+        if ($id) {
+            $results = $this->util->getWeatherForLocation($id);
+            foreach ($results as $result) {
+                $date = $result->getDate()->format('Y-m-d');
+                $city = $result->getLocation()->getCity();
+                $country = $result->getLocation()->getCountry();
+                $temperature = $result->getTemperature();
+                $output->writeln("{$city}, {$country}, {$date}, {$temperature}C");
+            }
         }
-
-        $io->success('You have a new command! Now make it your own! Pass --help to see your options.');
+//        $io->success('You have a new command! Now make it your own! Pass --help to see your options.');
 
         return Command::SUCCESS;
     }
