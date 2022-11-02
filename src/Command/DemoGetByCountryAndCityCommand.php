@@ -41,14 +41,15 @@ class DemoGetByCountryAndCityCommand extends Command
         $city = $input->getArgument('city');
 
         if ($country && $city) {
-            $output->writeln($country);
-            $output->writeln($city);
-            $result = $this->util->getWeatherForCountryAndCity($country, $city);
-
-            $output->writeln($result);
+            $output->writeln("{$city}, {$country}");
+            $results = $this->util->getWeatherForCountryAndCity($country, $city);
+            foreach ($results as $result) {
+                $date = $result->getDate()->format('Y-m-d');
+                $output->writeln("{$date} {$result->getTemperature()}C");
+            }
         }
 
-        $io->success('You have a new command! Now make it your own! Pass --help to see your options.');
+//        $io->success('You have a new command! Now make it your own! Pass --help to see your options.');
 
         return Command::SUCCESS;
     }
