@@ -4,6 +4,7 @@
 
 {% block body %}
     <h1>Location index</h1>
+    <h3>User: {{ user.email }}</h3>
 
     <table class="table">
         <thead>
@@ -42,5 +43,6 @@
     {% if is_granted('ROLE_ADMIN') %}
         <a href="{{ path('app_location_new') }}">Create new</a><br>
     {% endif %}
-    <a href="{{ path('app_measurement_index') }}">Go to measurements</a>
+    <a href="{{ path('app_measurement_index') }}">Go to measurements</a><br>
+    <a href="{{ path('logout') }}">Logout</a>
 {% endblock %}

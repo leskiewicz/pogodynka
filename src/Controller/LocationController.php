@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Location;
+use App\Entity\User;
 use App\Form\LocationType;
 use App\Repository\LocationRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -18,8 +19,11 @@ class LocationController extends AbstractController
     #[Route('/', name: 'app_location_index', methods: ['GET'])]
     public function index(LocationRepository $locationRepository): Response
     {
+        /** @var User $user */
+        $user = $this->getUser();
         return $this->render('location/index.html.twig', [
             'locations' => $locationRepository->findAll(),
+            'user' => $user,
         ]);
     }
 
@@ -56,7 +60,7 @@ class LocationController extends AbstractController
     #[Route('/{id}/edit', name: 'app_location_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Location $location, LocationRepository $locationRepository): Response
     {
-        $form = $this->createForm(LocationType::class, $location,['validation_groups' => ['edit'],]);
+        $form = $this->createForm(LocationType::class, $location, ['validation_groups' => ['edit'],]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
