@@ -7,13 +7,13 @@
 
     <table class="table">
         <thead>
-            <tr>
-                <th>Id</th>
-                <th>Date</th>
-                <th>Temperature</th>
-                <th>Percipitation</th>
-                <th>actions</th>
-            </tr>
+        <tr>
+            <th>Id</th>
+            <th>Date</th>
+            <th>Temperature</th>
+            <th>Percipitation</th>
+            <th>actions</th>
+        </tr>
         </thead>
         <tbody>
         {% for measurement in measurements %}
@@ -24,7 +24,9 @@
                 <td>{{ measurement.percipitation }}</td>
                 <td>
                     <a href="{{ path('app_measurement_show', {'id': measurement.id}) }}">show</a>
-                    <a href="{{ path('app_measurement_edit', {'id': measurement.id}) }}">edit</a>
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <a href="{{ path('app_measurement_edit', {'id': measurement.id}) }}">edit</a>
+                    {% endif %}
                 </td>
             </tr>
         {% else %}
@@ -35,6 +37,8 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_measurement_new') }}">Create new</a><br>
+    {% if is_granted('ROLE_ADMIN') %}
+        <a href="{{ path('app_measurement_new') }}">Create new</a><br>
+    {% endif %}
     <a href="{{ path('app_location_index') }}">Go to locations</a>
 {% endblock %}
