@@ -25,7 +25,7 @@ class LocationController extends AbstractController
     public function new(Request $request, LocationRepository $locationRepository): Response
     {
         $location = new Location();
-        $form = $this->createForm(LocationType::class, $location, ['validation_group' => ['new'],]);
+        $form = $this->createForm(LocationType::class, $location, ['validation_groups' => ['new'],]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -51,7 +51,7 @@ class LocationController extends AbstractController
     #[Route('/{id}/edit', name: 'app_location_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Location $location, LocationRepository $locationRepository): Response
     {
-        $form = $this->createForm(LocationType::class, $location,['validation_group' => ['edit'],]);
+        $form = $this->createForm(LocationType::class, $location,['validation_groups' => ['edit'],]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
